@@ -3,17 +3,18 @@ id_usuario int auto_increment unique NOT null,
 nombre varchar(255),
 apellido varchar(255),
 numero varchar(12),
+contrasena varchar(25),
 foto_perfil varchar(255),
 fecha_registro date,
 PRIMARY KEY(id_usuario)
 );
 
-INSERT INTO Usuarios(nombre, apellido, numero, foto_perfil, fecha_registro) VALUES 
-("Marcos", "Lopez", "541112345678", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Martina", "Morales", "541187654321", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Camila", "Morales", "541111111111", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Mia", "Morales", "541122222222", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Pablo", "Diaz", "541133333333", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10");
+INSERT INTO Usuarios(nombre, apellido, numero, contrasena, foto_perfil, fecha_registro) VALUES 
+("Marcos", "Lopez", "541112345678", "123456", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Martina", "Morales", "541187654321", "121212", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Camila", "Morales", "541111111111", "232323", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Mia", "Morales", "541122222222", "343434", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Pablo", "Diaz", "541133333333", "654321", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10");
 
 CREATE TABLE IF NOT EXISTS Chats(
 id_chat int auto_increment unique NOT null,
@@ -24,8 +25,8 @@ PRIMARY KEY(id_chat)
 );
 
 INSERT INTO Chats(fecha_creacion, nombre, foto_perfil) VALUES 
-("2026-09-10", "Hermanas", "2026_TPIN2_G16/frontend/public/foto_grupo.png"), (1)
-("2026-09-10", "TP historia", "2026_TPIN2_G16/frontend/public/foto_grupo.png"); (2)
+("2026-09-10", "Hermanas", "2026_TPIN2_G16/frontend/public/foto_grupo.png"),
+("2026-09-10", "TP historia", "2026_TPIN2_G16/frontend/public/foto_grupo.png");
 
 CREATE TABLE IF NOT EXISTS UsuariosxChats(
 id_usuario int,
