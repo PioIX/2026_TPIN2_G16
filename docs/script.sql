@@ -2,19 +2,19 @@ CREATE TABLE IF NOT EXISTS Usuarios(
 id_usuario int auto_increment unique NOT null,
 nombre varchar(255),
 apellido varchar(255),
-numero varchar(12),
+mail varchar(255),
 contrasena varchar(25),
 foto_perfil varchar(255),
 fecha_registro date,
 PRIMARY KEY(id_usuario)
 );
 
-INSERT INTO Usuarios(nombre, apellido, numero, contrasena, foto_perfil, fecha_registro) VALUES 
-("Marcos", "Lopez", "541112345678", "123456", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Martina", "Morales", "541187654321", "121212", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Camila", "Morales", "541111111111", "232323", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Mia", "Morales", "541122222222", "343434", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
-("Pablo", "Diaz", "541133333333", "654321", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10");
+INSERT INTO Usuarios(nombre, apellido, mail, contrasena, foto_perfil, fecha_registro) VALUES 
+("Marcos", "Lopez", "mlopez@gmail.com", "123456", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Martina", "Morales", "mmorales@gmail.com", "121212", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Camila", "Morales", "cmorales@gmail.com", "232323", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Mia", "Morales", "miamorales@gmail.com", "343434", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10"),
+("Pablo", "Diaz", "pdiaz@gmail.com", "654321", "2026_TPIN2_G16/frontend/public/foto_perfil.png", "2026-09-10");
 
 CREATE TABLE IF NOT EXISTS Chats(
 id_chat int auto_increment unique NOT null,

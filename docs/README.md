@@ -3,11 +3,11 @@
 #### Martina:
 - **Nombre:** Martina
 - **Apellido:** Morales
-- **Numero:** +54 11 8765-4321
+- **Mail:** mmorales@gmail.com
 - **Contraseña:** 121212
 
 #### Pablo:
 - **Nombre:** Pablo
 - **Apellido:** Diaz
-- **Numero:** +54 11 3333-3333
+- **Mail:** pdiaz@gmail.com
 - **Contraseña:** 654321
