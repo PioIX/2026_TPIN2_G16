@@ -67,7 +67,49 @@ app.post('/register', async function(req, res) {
 //chats
 app.get('/chats', async function(req, res) {
     try {
-        let respuesta = await realizarQuery(`SELECT * FROM Chats WHERE `)
+        let respuesta = await realizarQuery(`SELECT Chats.id_chat, nombre, foto_perfil FROM Chats INNER JOIN UsuariosxChats ON Chats.id_chat = UsuariosxChats.id_chat WHERE id_usuario = ${req.query.id_usuario}`);
+        res.send(respuesta);
+    } catch (error) {
+        res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
+    }
+})
+app.get('/contacto', async function(req, res) {
+    try {
+        let respuesta = await realizarQuery(`SELECT nombre, foto_perfil FROM Usuarios WHERE id_usuario = ${req.query.id_usuario}`);
+        res.send(respuesta);
+    } catch (error) {
+        res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
+    }
+})
+
+// Chat individual
+app.post('/contacto', async function(req, res) {
+    try {
+        console.log(req.body) ;
+        let contacto = await realizarQuery(`SELECT id_usuario FROM Usuarios WHERE mail = "${req.body.mail}"`);
+        if (contacto.length === 0) {
+            throw new Error("No existe este usuario.");
+        } else {
+            let idContacto = contacto[0].id_usuario;
+            realizarQuery(`
+                INSERT INTO Chats (fecha_creacion) VALUES
+                ("${req.body.fecha_creacion}")
+            `);
+            // faltan registros en usuariosxchats
+        }
+    } catch (error) {
+        if (error.message == "No existe este usuario.") {
+            res.status(500).send(error.message) ;
+        } else {
+            res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
+        }
+    }
+})
+
+// Chat grupal
+app.post('/grupo', async function(req, res) {
+    try {
+        console.log(req.body);
     } catch (error) {
         
     }
