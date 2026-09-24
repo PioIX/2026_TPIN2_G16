@@ -27,16 +27,13 @@ app.post('/login', async function(req, res) {
         console.log(req.body);
         let id = await realizarQuery(`SELECT id_usuario FROM Usuarios WHERE mail = "${req.body.mail}" AND contrasena = "${req.body.contrasena}"`);
         if (id.length === 0) {
-            throw new Error("Mail o contraseña incorrecto.");
+            res.send(0)
         } else {
             res.send(id[0]);
         }
     } catch (error) {
-        if (error.message == "Mail o contraseña incorrecto.") {
-            res.status(500).send(error.message) ;
-        } else {
-            res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
-        }
+        res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
+        res.send(-1);
     }
 })
 
@@ -46,7 +43,7 @@ app.post('/register', async function(req, res) {
         console.log(req.body) ;
         let existe = await realizarQuery(`SELECT * FROM Usuarios WHERE mail = "${req.body.mail}"`) ;
         if (existe.length > 0) {
-            throw new Error("Ya existe este usuario.");
+            res.send(0);
         } else {
             realizarQuery(`
                 INSERT INTO Usuarios (nombre, apellido, mail, contrasena, foto_perfil, fecha_registro) VALUES
@@ -56,11 +53,8 @@ app.post('/register', async function(req, res) {
             res.send(id[0]);
         }
     } catch (error) {
-        if (error.message == "Ya existe este usuario.") {
-            res.status(500).send(error.message) ;
-        } else {
-            res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
-        }
+        res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
+        res.send(-1);
     }
 })
 
