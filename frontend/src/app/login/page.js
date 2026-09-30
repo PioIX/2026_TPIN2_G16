@@ -35,12 +35,14 @@ export default function LoginPage() {
     }
 
     return(
-        <>
-            <h1>Login</h1>
-            <Input type={"text"} text={"Mail"} change={setMail}></Input>
-            <input type={"password"} text={"Contraseña"} change={setPassword}></input>
+        <main>
+            <h1>Pio Chat</h1>
+            <br></br>
+            <h2>Login</h2>
+            <Input type={"email"} text={"Mail"} change={setMail}></Input>
+            <Input type={"password"} text={"Contraseña"} change={setPassword}></Input>
             <br></br>
             <Button text={"Iniciar Sesion"} funcion={iniciarSesion}></Button>
-        </>
+        </main>
     )
 }
