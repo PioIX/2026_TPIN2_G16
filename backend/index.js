@@ -29,7 +29,7 @@ app.post('/login', async function(req, res) {
         if (id.length === 0) {
             throw new Error("Mail o contraseña incorrecto.");
         } else {
-            res.send(id[0]);
+            res.json(id[0]);
         }
     } catch (error) {
         if (error.message == "Mail o contraseña incorrecto.") {
@@ -53,7 +53,7 @@ app.post('/register', async function(req, res) {
                 ("${req.body.nombre}","${req.body.apellido}","${req.body.mail}","${req.body.contrasena}","${req.body.foto_perfil}",CURDATE());
             `);
             let id = await realizarQuery(`SELECT LAST_INSERT_ID()`);
-            res.send(id[0]);
+            res.json(id[0]);
         }
     } catch (error) {
         if (error.message == "Ya existe este usuario.") {
@@ -68,7 +68,7 @@ app.post('/register', async function(req, res) {
 app.get('/chats', async function(req, res) {
     try {
         let respuesta = await realizarQuery(`SELECT Chats.id_chat, nombre, foto_perfil FROM Chats INNER JOIN UsuariosxChats ON Chats.id_chat = UsuariosxChats.id_chat WHERE id_usuario = ${req.query.id_usuario}`);
-        res.send(respuesta);
+        res.json(respuesta);
     } catch (error) {
         res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
     }
@@ -76,7 +76,7 @@ app.get('/chats', async function(req, res) {
 app.get('/contacto', async function(req, res) {
     try {
         let respuesta = await realizarQuery(`SELECT nombre, apellido, foto_perfil FROM Usuarios WHERE id_usuario = ${req.query.id_usuario}`);
-        res.send(respuesta);
+        res.json(respuesta);
     } catch (error) {
         res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
     }
@@ -157,8 +157,64 @@ app.get('/mensajes', async function(req, res) {
             FROM Mensajes INNER JOIN Usuarios ON Mensajes.id_usuario = Usuarios.id_usuario 
             WHERE id_chat = ${req.query.id_chat} ORDER BY fecha_envio ASC
         `);
-        res.send(respuesta);
+        res.json(respuesta);
     } catch (error) {
         res.status(500).send('Ha ocurrido un error, intentar más tarde') ;
     }
 })
+
+
+// SOCKET
+const io = require("socket.io")(server, {
+    cors: {
+        origin: ["http://localhost:3000", "http://localhost:3001"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    },
+});
+const sessionMiddleware = session({
+    secret: "aprobanosporfa",
+    resave: false,
+    saveUninitialized: false,
+});
+app.use(sessionMiddleware);
+io.use((socket, next) => {
+    sessionMiddleware(socket.request, {}, next);
+});
+
+io.on("connection", (socket) => {
+    const req = socket.request;
+
+    socket.on("joinRoom", (data) => {
+        console.log("🚀 ~ io.on ~ req.session.room:", req.session.room);
+        if (req.session.room != undefined && req.session.room.length > 0)
+        socket.leave(req.session.room);
+        req.session.room = data.room;
+        socket.join(req.session.room);
+        io.to(req.session.room).emit("chat-messages", {
+            user: req.session.user,
+            room: req.session.room,
+        });
+    });
+
+    socket.on("sendMessage", (data) => {
+        try {
+            const id_usuario = req.session.user.id_usuario;
+            const id_chat = req.session.room;
+            const texto = data;
+
+            await realizarQuery(`INSERT INTO Mensajes (id_usuario, id_chat, texto, fecha_envio) VALUES (${id_usuario}, ${id_chat}, "${texto}", NOW())`);
+
+            io.to(req.session.room).emit("newMessage", {
+                room: req.session.room,
+                message: data,
+            });
+        } catch (error) {
+            res.status(500).send('Ha ocurrido un error, intentar más tarde');
+        }
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Disconnect");
+    });
+});
