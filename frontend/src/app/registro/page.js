@@ -3,13 +3,16 @@
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Registro() {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [mail, setMail] = useState("");
     const [password, setPassword] = useState("");
-    const [foto, setFoto] = useState("");
+    const [foto, setFoto] = useState(null);
+
+    const router = useRouter();
 
     const registrarse = () => {
         const datos = new FormData();
@@ -35,7 +38,7 @@ export default function Registro() {
                         <p>A ocurrido un error, intente denuevo más tarde.</p>
                     )
                 } else {
-
+                    router.replace("/chats");
                 }
             });
     }
@@ -50,6 +53,8 @@ export default function Registro() {
             <Input type={"email"} text={"Mail"} change={setMail}></Input>
             <Input type={"password"} text={"Contraseña"} change={setPassword}></Input>
             <Input type={"file"} text={"Foto de perfil"} change={setFoto}></Input>
+            <br></br>
+            <Button text={"Registrarse"} funcion={registrarse}></Button>
         </main>
     )
 }
