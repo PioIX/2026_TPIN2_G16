@@ -1,5 +1,11 @@
 export default function Button({ text, funcion }) {
     return(
-        <button onClick={funcion}>{text}</button>
+        <>
+            {funcion ? (
+                <button onClick={funcion}>{text}</button>
+            ) : (
+                <button>{text}</button>
+            )}
+        </>
     )
 }
