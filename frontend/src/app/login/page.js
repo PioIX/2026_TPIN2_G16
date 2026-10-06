@@ -9,12 +9,14 @@ export default function LoginPage() {
     const [mail, setMail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [error, setError] = useState("");
+
     const router = useRouter();
 
     const iniciarSesion = () => {
         const datos = {mail: mail, contrasena: password};
 
-        fetch('http://localhost:3001/login', {
+        fetch('http://localhost:4000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,15 +26,11 @@ export default function LoginPage() {
             .then(response => response.json())
             .then(data => {
                 if (data === 0){
-                    return(
-                        <p>Mail o contraseña incorrectos, intenta denuevo.</p>
-                    )
+                    setError("Mail o contraseña incorrectos.");
                 } else if (data === -1) {
-                    return(
-                        <p>A ocurrido un error, intente denuevo más tarde.</p>
-                    )
+                    setError("Ha ocurrido un error, intente denuevo más tarde.");
                 } else {
-                    router.replace("/chats");
+                    router.replace("/listaChats");
                 }
             });
     }
@@ -46,6 +44,7 @@ export default function LoginPage() {
             <Input type={"password"} text={"Contraseña"} change={setPassword}></Input>
             <br></br>
             <Button text={"Iniciar Sesion"} funcion={iniciarSesion}></Button>
+            {error && (<p>{error}</p>)}
         </main>
     )
 }
