@@ -12,6 +12,8 @@ export default function Registro() {
     const [password, setPassword] = useState("");
     const [foto, setFoto] = useState(null);
 
+    const [error, setError] = useState("");
+
     const router = useRouter();
 
     const registrarse = () => {
@@ -23,22 +25,18 @@ export default function Registro() {
         datos.append("contrasena", password);
         datos.append("foto_perfil", foto);
 
-        fetch('http://localhost:3001/register', {
+        fetch('http://localhost:4000/register', {
             method: 'POST',
             body: datos
         })
             .then(response => response.json())
             .then(data => {
                 if (data === 0){
-                    return(
-                        <p>Ya existe una cuenta con este mail, intente denuevo.</p>
-                    )
+                    setError("Ya existe una cuenta con este mail.");
                 } else if (data === -1) {
-                    return(
-                        <p>A ocurrido un error, intente denuevo más tarde.</p>
-                    )
+                    setError("Ha ocurrido un error, intente denuevo más tarde.")
                 } else {
-                    router.replace("/chats");
+                    router.replace("/listaChats");
                 }
             });
     }
@@ -55,6 +53,7 @@ export default function Registro() {
             <Input type={"file"} text={"Foto de perfil"} change={setFoto}></Input>
             <br></br>
             <Button text={"Registrarse"} funcion={registrarse}></Button>
+            {error && (<p>{error}</p>)}
         </main>
     )
 }

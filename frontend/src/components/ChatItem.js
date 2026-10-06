@@ -17,7 +17,7 @@ export default function ChatItem({ chat }) {
     }
 
     return(
-        <div onClick={abrirChat}>
+        <div onClick={() => {abrirChat(chat.id_chat)}}>
             <img src={foto} alt="Foto del chat" width={"50"} height={"50"}></img>
             <h3>{chat.nombre}</h3>
         </div>
